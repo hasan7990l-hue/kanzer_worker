@@ -34,7 +34,7 @@ export default {
 async function handleOAuth(request) {
   try {
     const body = await request.text();
-    const r = await fetch('https://oauth.deriv.com/oauth2/token', {
+    const r = await fetch('https://auth.deriv.com/oauth2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body
