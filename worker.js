@@ -23,6 +23,34 @@ export default {
     }
 
     // Deriv WebSocket proxy
+    // Deriv REST — accounts list
+if (url.pathname === '/deriv/accounts' && request.method === 'GET') {
+  const auth = request.headers.get('Authorization');
+  if (!auth) return new Response(JSON.stringify({error:'missing auth'}), {status:401, headers:{...CORS, 'Content-Type':'application/json'}});
+  const r = await fetch('https://api.derivws.com/trading/v1/options/accounts', {
+    headers: { 'Authorization': auth }
+  });
+  return new Response(await r.text(), {
+    status: r.status,
+    headers: { ...CORS, 'Content-Type': 'application/json' }
+  });
+}
+
+// Deriv REST — OTP
+if (url.pathname === '/deriv/otp' && request.method === 'POST') {
+  const auth = request.headers.get('Authorization');
+  const accountId = url.searchParams.get('accountId');
+  if (!auth || !accountId) return new Response(JSON.stringify({error:'missing params'}), {status:400, headers:{...CORS, 'Content-Type':'application/json'}});
+  const r = await fetch('https://api.derivws.com/trading/v1/options/accounts/' + accountId + '/otp', {
+    method: 'POST',
+    headers: { 'Authorization': auth }
+  });
+  return new Response(await r.text(), {
+    status: r.status,
+    headers: { ...CORS, 'Content-Type': 'application/json' }
+  });
+}
+
     if (url.searchParams.get('ws-proxy') === '1') {
       return handleWS(request, url);
     }
