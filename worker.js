@@ -84,8 +84,8 @@ async function handleAI(request, env, origin) {
   if (!env.GROQ_API_KEY) return json({ error: 'GROQ_API_KEY missing' }, 500, origin);
 
   // Origin gate — blocks random scripts and curl from other origins
-  if (origin && origin !== ALLOWED_ORIGIN && !origin.startsWith('http://localhost')) {
-    return json({ error: 'forbidden origin' }, 403, origin);
+  if (origin !== ALLOWED_ORIGIN && !origin.startsWith('http://localhost')) {
+  return json({ error: 'forbidden origin' }, 403, origin);
   }
 
   try {
